@@ -44,7 +44,6 @@ int main(int argc, char** argv) {
     }
 
     const auto& tz_database{ std::chrono::get_tzdb() };
-
     if (enter_location != "")
     {
         std::string time_zone{};
@@ -54,6 +53,7 @@ int main(int argc, char** argv) {
         try
         {
             const std::chrono::zoned_time location_time{ time_zone, std::chrono::system_clock::now() };
+            locations[enter_location] = time_zone;
             std::cout << "Time at " << enter_location << ": " << location_time << std::endl;
         }
         catch (const std::runtime_error& ex)
@@ -64,7 +64,13 @@ int main(int argc, char** argv) {
 
     if (view_all_locations)
     {
-        std::cout << "viewing all" << std::endl;
+        std::cout << "Viewing all locations: " << std::endl;
+        for (const auto& element : locations) {
+            const auto time_zone = element.second.as<std::string>();
+            std::cout << "    " << element.first.as<std::string>() << ": ";
+            const std::chrono::zoned_time location_time{ time_zone, std::chrono::system_clock::now() };
+            std::cout << location_time << std::endl;
+        }
     }
 
     if (view_all_tz)
@@ -76,7 +82,15 @@ int main(int argc, char** argv) {
 
     if (remove_location != "")
     {
-        std::cout << remove_location << " has been removed" << std::endl;
+        if (locations[remove_location])
+        {
+            locations.remove(remove_location);
+            std::cout << remove_location << " has been removed" << std::endl;
+        }
+        else
+        {
+            std::cout << "Location \"" << remove_location << "\" not found" << std::endl;
+        }
     }
 
     std::ofstream output(locations_file_name);
