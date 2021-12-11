@@ -1,5 +1,6 @@
 # Executables
 out/
+bin/
 
 # Visual Studio
 .vs/

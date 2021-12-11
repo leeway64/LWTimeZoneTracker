@@ -10,17 +10,37 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std:c++latest")
 set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std:c++latest")
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
-include(FetchContent)
 
-FetchContent_Declare(
-	cli11
-	GIT_REPOSITORY https://github.com/CLIUtils/CLI11
-	GIT_TAG        v2.1.2
-)
 
-FetchContent_MakeAvailable(cli11)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
+
+
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
+                "${CMAKE_BINARY_DIR}/conan.cmake"
+                EXPECTED_HASH SHA256=396e16d0f5eabdc6a14afddbcfff62a54a7ee75c6da23f32f7a31bc85db23484
+                TLS_VERIFY ON)
+endif()
+
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+conan_cmake_configure(REQUIRES cli11/2.1.1 yaml-cpp/0.7.0
+                      GENERATORS cmake_find_package)
+
+conan_cmake_autodetect(settings)
+
+conan_cmake_install(PATH_OR_REFERENCE .
+                    BUILD missing
+                    REMOTE conancenter
+                    SETTINGS ${settings})
+
+find_package(CLI11)
+find_package(yaml-cpp)
 
 add_executable (LWTimezonetracker
 	"src/main.cpp" "src/LWFormatter.hpp")
@@ -29,4 +49,5 @@ target_link_libraries(
 	LWTimezonetracker
 	PRIVATE
 		CLI11::CLI11
+		yaml-cpp::yaml-cpp
 )

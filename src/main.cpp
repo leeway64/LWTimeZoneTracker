@@ -1,6 +1,8 @@
 #include <iostream>
 #include <chrono>
 #include <algorithm>
+
+#include "yaml-cpp/yaml.h"
 #include <CLI/CLI.hpp>
 
 #include "LWFormatter.hpp"
@@ -9,13 +11,14 @@
 int main(int argc, char** argv) {
     const std::string locations_file_name = "list_of_locations.yaml";
 
-    const std::filesystem::path timers_file{ locations_file_name };
-    if (!std::filesystem::exists(timers_file))
+    const std::filesystem::path locations_file{ locations_file_name };
+    if (!std::filesystem::exists(locations_file))
     {
         std::ofstream output(locations_file_name);
-        //output << "{\n}\n";
         output.close();
     }
+
+    YAML::Node locations = YAML::LoadFile(locations_file_name);
 
 	CLI::App app{ "LWTimezonetracker" };
 
@@ -75,6 +78,10 @@ int main(int argc, char** argv) {
     {
         std::cout << remove_location << " has been removed" << std::endl;
     }
+
+    std::ofstream output(locations_file_name);
+    output << locations << std::endl;
+    output.close();
 
 	return 0;
 }
