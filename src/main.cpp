@@ -25,10 +25,10 @@ int main(int argc, char** argv) {
     app.add_option("-e", enter_location, "Enter a location");
 
     bool view_all_locations{ false };
-    app.add_flag("-va", view_all_locations, "View all locations");
+    app.add_flag("-v", view_all_locations, "View all locations");
 
-    bool view_all_tz{};
-    app.add_flag("-vtz", view_all_tz, "View all time zones");
+    bool view_all_tz{ false };
+    app.add_flag("-t", view_all_tz, "View all time zones");
 
     std::string remove_location = "";
     app.add_option("-r", remove_location, "Remove a location");
@@ -45,18 +45,17 @@ int main(int argc, char** argv) {
     if (enter_location != "")
     {
         std::string time_zone{};
-        std::cout << "Enter time zone of " << enter_location << ": " << std::endl;
+        std::cout << "Enter time zone of " << enter_location << ": ";
         std::cin >> time_zone;
 
-        bool found{ false };
-        for (const auto& timezone : tz_database.zones)
+        try
         {
-            
+            const std::chrono::zoned_time location_time{ time_zone, std::chrono::system_clock::now() };
+            std::cout << "Time at " << enter_location << ": " << location_time << std::endl;
         }
-
-        if (!found)
+        catch (const std::runtime_error& ex)
         {
-            std::cout << "Timezone was not found" << std::endl;
+            std::cout << "Unable to find time zone of name \"" << time_zone << "\"" << std::endl;
         }
     }
 
@@ -67,7 +66,9 @@ int main(int argc, char** argv) {
 
     if (view_all_tz)
     {
-
+        for (const auto& timezone : tz_database.zones) {
+            std::cout << timezone.name() << std::endl;
+        }
     }
 
     if (remove_location != "")
