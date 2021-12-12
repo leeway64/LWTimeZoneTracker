@@ -4,8 +4,8 @@ LWTimezonetracker
 LWTimezonetracker is a C++ CLI application that allows you to track the timezone of a given
 location.
 
-Have you ever lived in a different time zone than your friends and family, and wondered what the
-time is at their country/state? With this CLI, you never have to wonder again?
+Have you ever lived in a different time zone than your friends and family and wondered what the
+time is at their country/state? With this CLI, you never have to wonder again!
 
 Installation
 -------------
