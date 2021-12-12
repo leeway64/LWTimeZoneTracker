@@ -36,10 +36,12 @@ int main(int argc, char** argv) {
     std::string remove_location = "";
     app.add_option("-r", remove_location, "Remove a location");
 
-    try {
+    try
+    {
         app.parse(argc, argv);
     }
-    catch (const CLI::ParseError& e) {
+    catch (const CLI::ParseError& e)
+    {
         return app.exit(e);
     }
 
@@ -54,9 +56,9 @@ int main(int argc, char** argv) {
         {
             const std::chrono::zoned_time location_time{ time_zone, std::chrono::system_clock::now() };
             locations[enter_location] = time_zone;
-            std::cout << "Time at " << enter_location << ": " << location_time << std::endl;
+            std::cout << "    Time at " << enter_location << ": " << location_time << std::endl;
         }
-        catch (const std::runtime_error& ex)
+        catch (const std::runtime_error&)
         {
             std::cout << "Unable to find time zone of name \"" << time_zone << "\"" << std::endl;
         }
@@ -65,7 +67,8 @@ int main(int argc, char** argv) {
     if (view_all_locations)
     {
         std::cout << "Viewing all locations: " << std::endl;
-        for (const auto& element : locations) {
+        for (const auto& element : locations)
+        {
             const auto time_zone = element.second.as<std::string>();
             std::cout << "    " << element.first.as<std::string>() << ": ";
             const std::chrono::zoned_time location_time{ time_zone, std::chrono::system_clock::now() };
@@ -75,7 +78,8 @@ int main(int argc, char** argv) {
 
     if (view_all_tz)
     {
-        for (const auto& timezone : tz_database.zones) {
+        for (const auto& timezone : tz_database.zones)
+        {
             std::cout << timezone.name() << std::endl;
         }
     }
@@ -85,7 +89,7 @@ int main(int argc, char** argv) {
         if (locations[remove_location])
         {
             locations.remove(remove_location);
-            std::cout << remove_location << " has been removed" << std::endl;
+            std::cout << "Location " << remove_location << " has been removed" << std::endl;
         }
         else
         {
