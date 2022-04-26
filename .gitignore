@@ -1,6 +1,5 @@
 # Executables
-out/
-bin/
+*.exe
 
 cmake-build-debug/
 

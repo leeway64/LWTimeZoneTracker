@@ -41,9 +41,6 @@ Third Party Software
 ---------------------
 
 - `CMake <https://cmake.org/>`_ (BSD-3-Clause): Build system generator.
-
 - `Conan <https://conan.io/>`_ (MIT License): Package manager.
-
 - `CLI11 <https://github.com/CLIUtils/CLI11>`_ (BSD-3-Clause): Command-line parser.
-
 - `yaml-cpp <https://github.com/jbeder/yaml-cpp>`_ (MIT License): YAML parser.
