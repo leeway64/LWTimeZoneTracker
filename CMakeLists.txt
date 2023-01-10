@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 project (
-	"LWTimezonetracker"
+	"LWTimeZoneTracker"
 	LANGUAGES CXX
 	VERSION "1.0.0"
 	)
@@ -41,11 +41,11 @@ conan_cmake_install(PATH_OR_REFERENCE .
 find_package(CLI11)
 find_package(yaml-cpp)
 
-add_executable (LWTimezonetracker
+add_executable (LWTimeZoneTracker
 	"src/main.cpp" "src/LWFormatter.hpp")
 
 target_link_libraries(
-	LWTimezonetracker
+	LWTimeZoneTracker
 	PRIVATE
 		CLI11::CLI11
 		yaml-cpp::yaml-cpp
